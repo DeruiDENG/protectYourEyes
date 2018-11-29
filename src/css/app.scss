@@ -1,0 +1,15 @@
+@import "utils";
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: rem-calc(400);
+  padding: rem-calc(16);
+}
+
+h4 {
+  margin-top: 0;
+  margin-bottom: rem-calc(16);
+}

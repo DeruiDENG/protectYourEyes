@@ -6,7 +6,13 @@ const messageHandlers: Array<{ type: BackgroundMessageType, handler: MessageHand
     {
         type: BackgroundMessageType.SayHello,
         handler: (sendResponse: any, payload: { name: string }) => {
-            console.log(`Hello, ${name}`);
+            console.log(`Hello, ${payload.name}`);
+        }
+    },
+    {
+        type: BackgroundMessageType.StartTimer,
+        handler: (sendResponse: any, payload: { minutes: number }) => {
+            console.log(`Start timer: ${payload.minutes} counting...`);
         }
     },
 ];
