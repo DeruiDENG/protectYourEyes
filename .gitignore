@@ -1,0 +1,10 @@
+npm-debug.log
+node_modules/
+dist/js
+tmp/
+
+## JetBrains Related
+.idea/workspace.xml
+
+## Devtools Related
+dist/static/
