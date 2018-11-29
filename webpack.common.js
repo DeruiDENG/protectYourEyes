@@ -1,11 +1,10 @@
-const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
     entry: {
-        popup: path.join(__dirname, './src/popup/popup.ts'),
+        popup: path.join(__dirname, './src/popup/popup.tsx'),
         background: path.join(__dirname, './src/background/background.ts'),
     },
     output: {
@@ -63,7 +62,6 @@ module.exports = {
     plugins: [
         // exclude locale files in moment
         new CleanWebpackPlugin(['./dist/static']),
-        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         new HtmlWebpackPlugin({
             template: 'src/popup.html',
             filename: 'popup.html',
