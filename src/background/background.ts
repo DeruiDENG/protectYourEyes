@@ -1,6 +1,7 @@
 import {MessageTarget} from "../shared/message/MessageTarget";
 import {BackgroundMessageType} from "../shared/message/MessageType";
 import {bindMessageHandlers, MessageHandler} from "../shared/message/MessageHandler";
+import {timer} from './timer';
 
 const messageHandlers: Array<{ type: BackgroundMessageType, handler: MessageHandler, isAsync?: true }> = [
     {
@@ -13,6 +14,12 @@ const messageHandlers: Array<{ type: BackgroundMessageType, handler: MessageHand
         type: BackgroundMessageType.StartTimer,
         handler: (sendResponse: any, payload: { minutes: number }) => {
             console.log(`Start timer: ${payload.minutes} counting...`);
+        }
+    },
+    {
+        type: BackgroundMessageType.GetState,
+        handler: (sendResponse: any) => {
+            sendResponse(timer.getState());
         }
     },
 ];
