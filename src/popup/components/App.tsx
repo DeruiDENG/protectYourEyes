@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useTimerState } from "../hooks/useTimerState";
-import StoppedTimer from "./StoppedTimer";
+import Timer from "./Timer";
 
 const App = () => {
   const timerState = useTimerState();
@@ -12,7 +12,7 @@ const App = () => {
       <div>
         <h4>Protect Your Eyes</h4>
         <div>{JSON.stringify(timerState)}</div>
-        <StoppedTimer internal={null} />
+        <Timer timerState={timerState} />
       </div>
     );
   }

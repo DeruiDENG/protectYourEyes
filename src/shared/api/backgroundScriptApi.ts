@@ -24,6 +24,13 @@ const apiList = {
       type: BackgroundMessageType.GetState,
       payload: {}
     });
+  },
+  updateInterval: (intervalInSeconds: number) => {
+    return sendMessageToBackground<void>({
+      target: MessageTarget.Background,
+      type: BackgroundMessageType.UpdateInterval,
+      payload: { intervalInSeconds }
+    });
   }
 };
 

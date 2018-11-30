@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { secondsToTime, timeToSeconds } from "../utils/time";
+import backgroundApi from "../../shared/api/backgroundScriptApi";
 
 interface Props {
   timeInSeconds: number; // Time in seconds
@@ -18,10 +19,11 @@ const TimeInput = (props: Props) => {
         minutes: minuteTime.time,
         seconds: secondTime.time
       });
-      console.log(seconds);
+      backgroundApi.updateInterval(seconds);
     },
     [minuteTime, secondTime]
   );
+
   return (
     <div>
       <input

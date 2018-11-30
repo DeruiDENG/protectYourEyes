@@ -1,3 +1,6 @@
-export type TimerState = {
-    status: 'stopped'
-} | { status: 'started', startTime: number, interval: number };
+export type TimerState =
+  | {
+      status: "stopped";
+      interval: number;
+    }
+  | { status: "started"; startTime: number; interval: number };

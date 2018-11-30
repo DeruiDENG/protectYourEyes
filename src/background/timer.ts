@@ -3,21 +3,26 @@ import { TimerState } from "../shared/response/TimerState";
 class Timer {
   private status: "started" | "stopped" = "stopped";
   private startTime: number = 0;
-  private interval: number = 0;
+  private interval: number = 1200;
   private timer: NodeJS.Timer | null = null;
 
   getState(): TimerState {
-    if (this.status === 'stopped') {
+    if (this.status === "stopped") {
       return {
-        status: this.status
-      }
+        status: this.status,
+        interval: this.interval
+      };
     }
 
     return {
-      status: 'started',
+      status: "started",
       startTime: this.startTime,
-      interval: this.interval,
+      interval: this.interval
     };
+  }
+
+  updateInterval(interval: number) {
+    this.interval = interval;
   }
 
   start() {
@@ -28,7 +33,7 @@ class Timer {
     this.timer = setInterval(() => {
       console.log("Time is up!");
     }, this.interval);
-    status = 'start';
+    status = "start";
   }
 
   stop() {
@@ -37,7 +42,7 @@ class Timer {
     }
 
     this.timer = null;
-    status = 'stop';
+    status = "stop";
   }
 }
 
