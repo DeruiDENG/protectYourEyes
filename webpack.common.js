@@ -11,12 +11,6 @@ module.exports = {
         path: path.join(__dirname, './dist/static'),
         filename: '[name].js'
     },
-    optimization: {
-        splitChunks: {
-            name: 'vendor',
-            chunks: 'initial'
-        }
-    },
     module: {
         rules: [
             {
@@ -65,7 +59,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: 'src/popup.html',
             filename: 'popup.html',
-            chunks: ['vendor', 'popup'],
+            chunks: ['popup'],
         }),
     ]
 };

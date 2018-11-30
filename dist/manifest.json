@@ -11,7 +11,7 @@
   },
 
   "background": {
-    "scripts": ["static/vendor.js", "static/background.js"]
+    "scripts": ["static/background.js"]
   },
 
   "permissions": [
