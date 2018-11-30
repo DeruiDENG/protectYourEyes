@@ -1,7 +1,6 @@
 import * as React from "react";
-import { useState } from "react";
-import { secondsToTime } from "../utils/time";
-import { bool } from "prop-types";
+import { useState, useEffect } from "react";
+import { secondsToTime, timeToSeconds } from "../utils/time";
 
 interface Props {
   timeInSeconds: number; // Time in seconds
@@ -10,12 +9,32 @@ interface Props {
 const TimeInput = (props: Props) => {
   const { timeInSeconds } = props;
   const { seconds, minutes } = secondsToTime(timeInSeconds);
+  const minuteTime = useTime(minutes, () => {});
+  const secondTime = useTime(seconds, () => {}, [0, 59]);
 
+  useEffect(
+    () => {
+      const seconds = timeToSeconds({
+        minutes: minuteTime.time,
+        seconds: secondTime.time
+      });
+      console.log(seconds);
+    },
+    [minuteTime, secondTime]
+  );
   return (
     <div>
-      <input type="text" {...useTime(minutes, () => {})} />
+      <input
+        type="text"
+        value={minuteTime.displayTime}
+        {...minuteTime.handlers}
+      />
       <span>: </span>
-      <input type="text" {...useTime(seconds, () => {}, [0, 59])} />
+      <input
+        type="text"
+        value={secondTime.displayTime}
+        {...secondTime.handlers}
+      />
     </div>
   );
 };
@@ -47,8 +66,11 @@ function useTime(
   };
 
   return {
-    value: String(timeInput),
-    onChange
+    time: timeInput,
+    displayTime: String(timeInput),
+    handlers: {
+      onChange
+    }
   };
 }
 

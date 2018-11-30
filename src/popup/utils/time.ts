@@ -17,5 +17,5 @@ export function timeToSeconds({
   minutes: number;
   seconds: number;
 }) {
-  return;
+  return minutes * 60 + seconds;
 }
