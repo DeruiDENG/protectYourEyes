@@ -1,22 +1,29 @@
-import { TimerState } from "../shared/response/TimerState";
+import { TimerState } from '../shared/response/TimerState';
+import { sendNotification } from './services';
 
 class Timer {
-  private status: "running" | "stopped" = "stopped";
+  private status: 'running' | 'stopped' | 'time-up' = 'stopped';
   private startTime: number = 0;
   private interval: number = 1200;
+  private restInterval: number = 20;
   private timer: NodeJS.Timer | null = null;
+  private restingTimer: NodeJS.Timer = null;
 
   getState(): TimerState {
-    if (this.status === "stopped") {
+    if (this.status === 'stopped') {
       return {
         status: this.status,
-        interval: this.interval
+        interval: this.interval,
+      };
+    } else if (this.status === 'time-up') {
+      return {
+        status: this.status,
       };
     }
 
     return {
-      status: "running",
-      remaining: this.getRemainingTime()
+      status: 'running',
+      remaining: this.getRemainingTime(),
     };
   }
 
@@ -25,28 +32,49 @@ class Timer {
   }
 
   start() {
-    if (this.timer) {
-      clearInterval(this.timer);
-    }
+    this.clearTimer();
+
+    const onConfirm = (willRest: boolean) => {
+      if (willRest) {
+        this.startRest();
+      } else {
+        this.start();
+      }
+    };
 
     this.timer = setInterval(() => {
-      console.log("Time is up!");
+      this.status = 'time-up';
+      sendNotification(onConfirm);
     }, this.interval);
     this.startTime = Date.now() / 1000;
-    this.status = "running";
+    this.status = 'running';
   }
 
   stop() {
-    if (this.timer) {
-      clearInterval(this.timer);
-    }
-
-    this.timer = null;
-    this.status = "stopped";
+    this.clearTimer();
+    this.status = 'stopped';
   }
 
+  private startRest() {
+    this.clearTimer();
+    this.restingTimer = setInterval(() => {
+      this.start();
+    }, this.restInterval);
+  }
+
+  private clearTimer() {
+    if (this.timer) {
+      clearInterval(this.timer);
+      this.timer = null;
+    }
+
+    if (this.restingTimer) {
+      clearInterval(this.restingTimer);
+      this.restingTimer = null;
+    }
+  }
   private getRemainingTime(): number {
-    if (this.status === "running") {
+    if (this.status === 'running') {
       return 0;
     }
 

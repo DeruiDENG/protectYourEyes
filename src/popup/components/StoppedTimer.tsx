@@ -3,6 +3,7 @@ import TimeInput from './TimeInput';
 
 interface Props {
   internal: number;
+  onStart: () => void;
 }
 
 const StoppedTimer = (props: Props) => {

@@ -12,15 +12,9 @@ const messageHandlers: Array<{
   isAsync?: true;
 }> = [
   {
-    type: BackgroundMessageType.SayHello,
-    handler: (sendResponse: any, payload: { name: string }) => {
-      console.log(`Hello, ${payload.name}`);
-    }
-  },
-  {
     type: BackgroundMessageType.StartTimer,
     handler: (sendResponse: any, payload: { minutes: number }) => {
-      console.log(`Start timer: ${payload.minutes} counting...`);
+      timer.start();
     }
   },
   {

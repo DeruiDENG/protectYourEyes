@@ -46,12 +46,12 @@ function useTime(
   onValidChange: (time: number) => any,
   range?: [number, number]
 ) {
-  const getFormattedTime = (time: string): string => {
-    if (time.length === 1) {
-      time = `0${time}`;
+  const getFormattedTime = (timeString: string): string => {
+    if (timeString.length === 1) {
+      timeString = `0${timeString}`;
     }
 
-    return time;
+    return timeString;
   };
 
   const [timeInput, setTimeInput] = useState(time);
