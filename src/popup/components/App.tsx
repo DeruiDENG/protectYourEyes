@@ -1,12 +1,9 @@
-import * as React from "react";
-import { useTimerState } from "../hooks/useTimerState";
-import Timer from "./Timer";
+import * as React from 'react';
+import { useTimerState } from '../hooks/useTimerState';
+import Timer from './Timer';
 
 const App = () => {
   const timerState = useTimerState();
-  console.log("Timer State:");
-  console.log(timerState);
-
   if (timerState) {
     return (
       <div>

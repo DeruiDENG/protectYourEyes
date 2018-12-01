@@ -1,6 +1,5 @@
-import * as React from "react";
-import TimeInput from "./TimeInput";
-
+import * as React from 'react';
+import TimeInput from './TimeInput';
 
 interface Props {
   internal: number;

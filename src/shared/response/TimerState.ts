@@ -1,6 +1,6 @@
 export type TimerState =
   | {
-      status: "stopped";
+      status: 'stopped';
       interval: number;
     }
-  | { status: "started"; startTime: number; interval: number };
+  | { status: 'running'; remaining: number };

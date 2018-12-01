@@ -6,13 +6,13 @@ export function secondsToTime(
 
   return {
     minutes,
-    seconds
+    seconds,
   };
 }
 
 export function timeToSeconds({
   minutes,
-  seconds
+  seconds,
 }: {
   minutes: number;
   seconds: number;

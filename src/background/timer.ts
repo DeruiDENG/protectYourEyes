@@ -1,7 +1,7 @@
 import { TimerState } from "../shared/response/TimerState";
 
 class Timer {
-  private status: "started" | "stopped" = "stopped";
+  private status: "running" | "stopped" = "stopped";
   private startTime: number = 0;
   private interval: number = 1200;
   private timer: NodeJS.Timer | null = null;
@@ -15,9 +15,8 @@ class Timer {
     }
 
     return {
-      status: "started",
-      startTime: this.startTime,
-      interval: this.interval
+      status: "running",
+      remaining: this.getRemainingTime()
     };
   }
 
@@ -33,7 +32,8 @@ class Timer {
     this.timer = setInterval(() => {
       console.log("Time is up!");
     }, this.interval);
-    status = "start";
+    this.startTime = Date.now() / 1000;
+    this.status = "running";
   }
 
   stop() {
@@ -42,7 +42,17 @@ class Timer {
     }
 
     this.timer = null;
-    status = "stop";
+    this.status = "stopped";
+  }
+
+  private getRemainingTime(): number {
+    if (this.status === "running") {
+      return 0;
+    }
+
+    const currentTime = Date.now() / 1000;
+    const remainingTime = currentTime - this.startTime - this.interval;
+    return Math.abs(remainingTime);
   }
 }
 

@@ -1,8 +1,8 @@
-import {BackgroundMessageType} from "./MessageType";
-import {MessageTarget} from "./MessageTarget";
+import { BackgroundMessageType } from './MessageType';
+import { MessageTarget } from './MessageTarget';
 
 export interface Message {
-    type: BackgroundMessageType,
-    target: MessageTarget,
-    payload?: any,
+  type: BackgroundMessageType;
+  target: MessageTarget;
+  payload?: any;
 }

@@ -1,7 +1,7 @@
-import * as React from "react";
-import { useState, useEffect } from "react";
-import { secondsToTime, timeToSeconds } from "../utils/time";
-import backgroundApi from "../../shared/api/backgroundScriptApi";
+import * as React from 'react';
+import { useEffect, useState } from 'react';
+import backgroundApi from '../../shared/api/backgroundScriptApi';
+import { secondsToTime, timeToSeconds } from '../utils/time';
 
 interface Props {
   timeInSeconds: number; // Time in seconds
@@ -10,16 +10,16 @@ interface Props {
 const TimeInput = (props: Props) => {
   const { timeInSeconds } = props;
   const { seconds, minutes } = secondsToTime(timeInSeconds);
-  const minuteTime = useTime(minutes, () => {});
-  const secondTime = useTime(seconds, () => {}, [0, 59]);
+  const minuteTime = useTime(minutes, () => null);
+  const secondTime = useTime(seconds, () => null, [0, 59]);
 
   useEffect(
     () => {
-      const seconds = timeToSeconds({
+      const updatedSeconds = timeToSeconds({
         minutes: minuteTime.time,
-        seconds: secondTime.time
+        seconds: secondTime.time,
       });
-      backgroundApi.updateInterval(seconds);
+      backgroundApi.updateInterval(updatedSeconds);
     },
     [minuteTime, secondTime]
   );
@@ -71,8 +71,8 @@ function useTime(
     time: timeInput,
     displayTime: String(timeInput),
     handlers: {
-      onChange
-    }
+      onChange,
+    },
   };
 }
 
