@@ -53,8 +53,10 @@ function getFormattedBadgeText(timeInSeconds: number): string {
   if (timeInSeconds <= 0 || Number.isNaN(timeInSeconds)) {
     return '';
   }
-  const minutes = Math.floor(timeInSeconds / 60);
-  const seconds = Math.floor(timeInSeconds - minutes * 60);
+
+  const roundedTimeInSeconds = Math.round(timeInSeconds);
+  const minutes = Math.floor(roundedTimeInSeconds / 60);
+  const seconds = Math.floor(roundedTimeInSeconds - minutes * 60);
 
   if (minutes > 9) {
     return minutes + 'm';
