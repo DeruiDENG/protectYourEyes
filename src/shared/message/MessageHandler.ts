@@ -2,13 +2,11 @@ import { BackgroundMessageType } from './MessageType';
 import { MessageTarget } from './MessageTarget';
 import MessageSender = chrome.runtime.MessageSender;
 
-export interface MessageHandler {
-  (
+export type MessageHandler = (
     sendResponse: (response: any) => void,
     payload?: object,
     sender?: MessageSender
-  ): void;
-}
+  ) => void;
 
 export const bindMessageHandlers = (
   messageHandlers: Array<{

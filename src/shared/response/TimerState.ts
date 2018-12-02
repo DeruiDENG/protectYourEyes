@@ -1,7 +1,4 @@
-export type TimerState =
-  | {
-      status: 'stopped';
-      interval: number;
-    }
-  | { status: 'running'; remaining: number }
-  | { status: 'time-up' };
+export interface TimerState {
+  status: 'stopped' | 'running' | 'time-up';
+  interval: number;
+}

@@ -1,18 +1,40 @@
 import * as React from 'react';
 import { TimerState } from '../../shared/response/TimerState';
-import StoppedTimer from './StoppedTimer';
+import TimeInput from './TimeInput';
+import backgroundApi from '../../shared/api/backgroundScriptApi';
 
 interface TimerProps {
   timerState: TimerState;
+  onAction: () => void;
 }
 
 const Timer = (props: TimerProps) => {
-  const { timerState } = props;
-  if (timerState.status === 'stopped') {
-    return <StoppedTimer internal={timerState.interval} />;
-  }
+  const { timerState, onAction } = props;
 
-  return <div>Timer is started</div>;
+  const onStart = () => {
+    backgroundApi.startTimer();
+    onAction();
+  };
+
+  const onStop = () => {
+    backgroundApi.stopTimer();
+    onAction();
+  };
+
+  return (
+    <React.Fragment>
+      <TimeInput
+        isDisabled={timerState.status !== 'stopped'}
+        initTimeInSeconds={timerState.interval}
+      />
+      {timerState.status !== 'running' && (
+        <button onClick={onStart}>Start</button>
+      )}
+      {timerState.status !== 'stopped' && (
+        <button onClick={onStop}>Stop</button>
+      )}
+    </React.Fragment>
+  );
 };
 
 export default Timer;

@@ -1,29 +1,24 @@
 import { TimerState } from '../shared/response/TimerState';
-import { sendNotification } from './services';
+import {
+  sendNotification,
+  setRemainingTimeBadgeText,
+  setTimeUpBadgeText,
+  clearBadgeText,
+} from './services';
 
 class Timer {
   private status: 'running' | 'stopped' | 'time-up' = 'stopped';
   private startTime: number = 0;
+  private restStartTime: number = 0;
   private interval: number = 1200;
-  private restInterval: number = 20;
+  private restInterval: number = 21;
   private timer: NodeJS.Timer | null = null;
   private restingTimer: NodeJS.Timer = null;
 
   getState(): TimerState {
-    if (this.status === 'stopped') {
-      return {
-        status: this.status,
-        interval: this.interval,
-      };
-    } else if (this.status === 'time-up') {
-      return {
-        status: this.status,
-      };
-    }
-
     return {
-      status: 'running',
-      remaining: this.getRemainingTime(),
+      status: this.status,
+      interval: this.interval,
     };
   }
 
@@ -33,6 +28,21 @@ class Timer {
 
   start() {
     this.clearTimer();
+    this.timer = setInterval(this.tick, 1000);
+    this.startTime = Date.now() / 1000;
+    this.status = 'running';
+  }
+
+  stop() {
+    this.clearTimer();
+    clearBadgeText();
+    this.status = 'stopped';
+  }
+
+  private tick = () => {
+    if (this.status !== 'running') {
+      return;
+    }
 
     const onConfirm = (willRest: boolean) => {
       if (willRest) {
@@ -42,24 +52,43 @@ class Timer {
       }
     };
 
-    this.timer = setInterval(() => {
+    if (this.isTimeUp()) {
       this.status = 'time-up';
+      clearInterval(this.timer);
       sendNotification(onConfirm);
-    }, this.interval);
-    this.startTime = Date.now() / 1000;
-    this.status = 'running';
+      setTimeUpBadgeText();
+    } else {
+      setRemainingTimeBadgeText(this.getRemainingTime());
+    }
+  };
+
+  private restingTick = () => {
+    if (this.status !== 'time-up') {
+      return;
+    }
+
+    if (this.isRestTimeUp()) {
+      clearInterval(this.restingTimer);
+      this.start();
+    } else {
+      setRemainingTimeBadgeText(this.getRestRemainingTime(), 'green');
+    }
+  };
+
+  private isTimeUp() {
+    return this.getRemainingTime() === 0;
   }
 
-  stop() {
-    this.clearTimer();
-    this.status = 'stopped';
+  private isRestTimeUp() {
+    return this.getRestRemainingTime() === 0;
   }
 
   private startRest() {
     this.clearTimer();
+    this.restStartTime = Date.now() / 1000;
     this.restingTimer = setInterval(() => {
-      this.start();
-    }, this.restInterval);
+      this.restingTick();
+    }, 1000);
   }
 
   private clearTimer() {
@@ -74,13 +103,15 @@ class Timer {
     }
   }
   private getRemainingTime(): number {
-    if (this.status === 'running') {
-      return 0;
-    }
-
     const currentTime = Date.now() / 1000;
-    const remainingTime = currentTime - this.startTime - this.interval;
-    return Math.abs(remainingTime);
+    const remainingTime = this.startTime + this.interval - currentTime;
+    return remainingTime > 0 ? remainingTime : 0;
+  }
+
+  private getRestRemainingTime(): number {
+    const currentTime = Date.now() / 1000;
+    const remainingTime = this.restStartTime + this.restInterval - currentTime;
+    return remainingTime > 0 ? remainingTime : 0;
   }
 }
 

@@ -5,6 +5,7 @@ import {
   MessageHandler
 } from "../shared/message/MessageHandler";
 import { timer } from "./timer";
+import { bindNotificationAction } from "./services";
 
 const messageHandlers: Array<{
   type: BackgroundMessageType;
@@ -13,8 +14,14 @@ const messageHandlers: Array<{
 }> = [
   {
     type: BackgroundMessageType.StartTimer,
-    handler: (sendResponse: any, payload: { minutes: number }) => {
+    handler: (sendResponse: any) => {
       timer.start();
+    }
+  },
+  {
+    type: BackgroundMessageType.StopTimer,
+    handler: (sendResponse: any) => {
+      timer.stop();
     }
   },
   {
@@ -36,6 +43,7 @@ const messageHandlers: Array<{
 
 const initBackground = () => {
   bindMessageHandlers(messageHandlers, MessageTarget.Background);
+  bindNotificationAction();
 };
 
 initBackground();

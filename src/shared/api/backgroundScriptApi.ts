@@ -4,18 +4,18 @@ import { BackgroundMessageType } from '../message/MessageType';
 import { TimerState } from '../response/TimerState';
 
 const apiList = {
-  sayHello: (name: string) => {
-    return sendMessageToBackground<void>({
-      target: MessageTarget.Background,
-      type: BackgroundMessageType.SayHello,
-      payload: { name },
-    });
-  },
-  startTimer: (minutes: number) => {
+  startTimer: () => {
     return sendMessageToBackground<void>({
       target: MessageTarget.Background,
       type: BackgroundMessageType.StartTimer,
-      payload: { minutes },
+      payload: {},
+    });
+  },
+  stopTimer: () => {
+    return sendMessageToBackground<void>({
+      target: MessageTarget.Background,
+      type: BackgroundMessageType.StopTimer,
+      payload: {},
     });
   },
   getTimerState: () => {

@@ -1,6 +1,6 @@
 export enum BackgroundMessageType {
-    SayHello,
     StartTimer,
+    StopTimer,
     GetState,
     UpdateInterval,
 }
