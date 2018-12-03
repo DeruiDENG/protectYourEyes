@@ -56,10 +56,5 @@ module.exports = {
     plugins: [
         // exclude locale files in moment
         new CleanWebpackPlugin(['./dist/static']),
-        new HtmlWebpackPlugin({
-            template: 'src/popup.html',
-            filename: 'popup.html',
-            chunks: ['popup'],
-        }),
     ]
 };

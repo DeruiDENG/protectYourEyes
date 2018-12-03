@@ -14,13 +14,13 @@ const messageHandlers: Array<{
 }> = [
   {
     type: BackgroundMessageType.StartTimer,
-    handler: (sendResponse: any) => {
+    handler: () => {
       timer.start();
     }
   },
   {
     type: BackgroundMessageType.StopTimer,
-    handler: (sendResponse: any) => {
+    handler: () => {
       timer.stop();
     }
   },

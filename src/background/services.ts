@@ -1,4 +1,4 @@
-type OnConfirm = (willTakeRest: boolean) => void;
+type OnConfirm = () => void;
 
 let notifications: Array<{ id: string; onConfirm: OnConfirm }> = [];
 
@@ -17,10 +17,10 @@ function removeNotification(id: string) {
   notifications = notifications.filter(x => x.id !== id);
 }
 
-export function sendNotification(onConfirm: (willTakeRest: boolean) => void) {
+export function sendNotification(onConfirm: OnConfirm) {
   const title = 'Time to rest your eyes!';
   const message = 'Following a 20-20-20 rule will help keep your eyes healthy!';
-  const buttons = [{ title: 'Take a rest' }, { title: 'Start next around' }];
+  const buttons = [{ title: 'I have rest my eyes' }];
 
   chrome.notifications.create(
     {
@@ -42,7 +42,7 @@ export function bindNotificationAction() {
     (notificationId, buttonIndex) => {
       const notification = getNotification(notificationId);
       if (notification) {
-        notification.onConfirm(buttonIndex === 0);
+        notification.onConfirm();
         removeNotification(notificationId);
       }
     }
@@ -71,13 +71,8 @@ function getFormattedBadgeText(timeInSeconds: number): string {
  */
 export function setRemainingTimeBadgeText(
   remainingTime: number,
-  background: 'green' | 'blue' = 'blue'
 ) {
   const badgeText = getFormattedBadgeText(remainingTime);
-  chrome.browserAction.setBadgeBackgroundColor({
-    color: background,
-  });
-
   chrome.browserAction.setBadgeText({
     text: badgeText,
   });
