@@ -3,8 +3,9 @@ node_modules/
 dist/js
 tmp/
 
-## JetBrains Related
-.idea/workspace.xml
+## IDE Related
+.idea/
+.vscode/
 
 ## Devtools Related
 dist/static/
